@@ -6,7 +6,7 @@ Supports most date formats with 'dd', 'MM', 'yyyy', 'do', 'MMM', 'MMMM'.
 
 # Installation
 
-Please install from the marketplace. If it's mot available there, you can [download the latest release here](https://github.com/hkgnp/logseq-quicktodo-plugin/releases), unzip the file and manually load it into Logseq.
+Please install from the marketplace. If it's not available there, you can [download the latest release here](https://github.com/hkgnp/logseq-quicktodo-plugin/releases), unzip the file and manually load it into Logseq.
 
 # Usage
 
