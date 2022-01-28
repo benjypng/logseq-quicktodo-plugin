@@ -26,6 +26,9 @@ const main = () => {
     {
       key: 'logseq-quicktodo-plugin',
       label: "Quick todo to today's journal page",
+      keybinding: {
+        binding: 'm t',
+      },
     },
     () => {
       logseq.showMainUI();
