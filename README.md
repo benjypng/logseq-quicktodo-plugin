@@ -12,4 +12,16 @@ Please install from the marketplace. If it's not available there, you can [downl
 
 # Usage
 
+## Default
+
 To begin, just activate the command palatte (Win: `Ctrl + Shift + p`, Mac: `Cmd + Shift + p`) and type `quick`, and the option `Quick todo to today's journal page` will appear. Select it and you can start keying in your task, and pressing `Enter` after. Your task will then appear on today's journal page.
+
+## Alternative
+
+If you would like to set a default page for the task items to go to, please key in the following in your plugin settings:
+
+```
+{
+    defaultPage: "default page here";
+}
+```

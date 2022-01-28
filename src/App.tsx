@@ -21,9 +21,19 @@ const App = () => {
           startingDate.substring(2, startingDate.length - 2)
         );
 
-        await logseq.Editor.insertBlock(todayPage.name, `TODO ${taskVal}`, {
-          isPageBlock: true,
-        });
+        if (logseq.settings.defaultPage) {
+          await logseq.Editor.insertBlock(
+            logseq.settings.defaultPage.toLowerCase(),
+            `TODO ${taskVal}`,
+            {
+              isPageBlock: true,
+            }
+          );
+        } else {
+          await logseq.Editor.insertBlock(todayPage.name, `TODO ${taskVal}`, {
+            isPageBlock: true,
+          });
+        }
 
         setTaskVal('');
 
