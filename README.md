@@ -18,7 +18,7 @@ To begin, just activate the command palatte (Win: `Ctrl + Shift + p`, Mac: `Cmd 
 
 ## Alternative
 
-If you would like to set a default page for the task items to go to, please key in the following in your plugin settings:
+If you would like to set a default page for the task items to go to, please key in the following in your plugin settings, and **restart** Logseq:
 
 ```
 {
