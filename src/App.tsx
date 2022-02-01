@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { getDateForPage } from './dateUtils';
+import { getDateForPageWithoutBrackets } from 'logseq-dateutils';
 
 const App = () => {
   const [taskVal, setTaskVal] = useState('');
@@ -12,13 +12,9 @@ const App = () => {
   const handleSubmit = async (e: any) => {
     if (e.keyCode === 13) {
       if (taskVal.length > 0) {
-        const startingDate = getDateForPage(
+        const startingDate = getDateForPageWithoutBrackets(
           new Date(),
           logseq.settings.preferredDateFormat
-        );
-
-        const todayPage = await logseq.Editor.getPage(
-          startingDate.substring(2, startingDate.length - 2)
         );
 
         if (logseq.settings.defaultPage) {
@@ -30,7 +26,7 @@ const App = () => {
             }
           );
         } else {
-          await logseq.Editor.insertBlock(todayPage.name, `TODO ${taskVal}`, {
+          await logseq.Editor.insertBlock(startingDate, `TODO ${taskVal}`, {
             isPageBlock: true,
           });
         }
