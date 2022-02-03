@@ -2,8 +2,6 @@
 
 This simple plugin helps you to insert a TODO item on your today's journal page, without navigating to it. This maybe useful when you are writing notes on one page, and suddenly want to add a task item regarding a separate matter. Instead of going to your daily page and adding the task there, this plugin allows you to add it using the command palatte.
 
-Supports most date formats with 'dd', 'MM', 'yyyy', 'do', 'MMM', 'MMMM'.
-
 ![](/screenshots/demo.gif)
 
 # Installation
