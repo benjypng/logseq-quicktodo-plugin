@@ -10,7 +10,31 @@ const App = () => {
   };
 
   const handleSubmit = async (e: any) => {
-    if (e.keyCode === 13) {
+    if ((e.key === 'Enter' && e.ctrlKey) || (e.key === 'Enter' && e.metaKey)) {
+      const regExp = /\[\[(.*?)\]\]/;
+      const matched = regExp.exec(taskVal);
+      const page = matched[1];
+
+      const getPage = await logseq.Editor.getPage(page);
+
+      if (getPage === null) {
+        await logseq.Editor.createPage(page, '', {
+          redirect: false,
+          createFirstBlock: false,
+          format: 'markdown',
+        });
+      }
+
+      await logseq.Editor.insertBlock(page, `TODO ${taskVal}`, {
+        isPageBlock: true,
+      });
+
+      logseq.App.showMsg(`${taskVal} added to [[${page}]]!`);
+
+      setTaskVal('');
+
+      logseq.hideMainUI({ restoreEditingCursor: true });
+    } else if (e.keyCode === 13) {
       if (taskVal.length > 0) {
         const startingDate = getDateForPageWithoutBrackets(
           new Date(),
