@@ -126,7 +126,10 @@ const App = () => {
       className="task-container flex justify-center border border-black"
       tabIndex={-1}
     >
-      <div className=" absolute top-10 bg-white rounded-lg p-3 w-1/3 border flex flex-col">
+      <div
+        className=" absolute top-10 bg-white rounded-lg p-3 border flex flex-col"
+        style={{minWidth: '33%'}}
+      >
         <label
           htmlFor="toggle-example"
           className="flex items-center cursor-pointer relative mb-4"
@@ -157,6 +160,7 @@ const App = () => {
           onChange={handleForm}
           value={taskVal}
           onKeyDown={(e) => handleSubmit(e)}
+          style={{minWidth: 300}}
         />
       </div>
     </div>
