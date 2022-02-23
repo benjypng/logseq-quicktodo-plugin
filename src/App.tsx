@@ -1,3 +1,4 @@
+import '@logseq/libs';
 import React, { useState } from 'react';
 import './App.css';
 import { getDateForPageWithoutBrackets } from 'logseq-dateutils';
