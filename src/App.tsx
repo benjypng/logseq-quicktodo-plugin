@@ -8,6 +8,11 @@ const App = () => {
   const [appendTodo, setAppendTodo] = useState(logseq.settings.appendTodo);
 
   const handleForm = (e: any) => {
+    if (e.target.value?.startsWith('TODO ')) {
+      setAppendTodo(true);
+      setTaskVal(e.target.value.slice(5));
+      return;
+    }
     setTaskVal(e.target.value);
   };
 
