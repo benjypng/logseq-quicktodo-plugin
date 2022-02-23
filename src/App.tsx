@@ -4,9 +4,18 @@ import { getDateForPageWithoutBrackets } from 'logseq-dateutils';
 
 const App = () => {
   const [taskVal, setTaskVal] = useState('');
+  const [appendTodo, setAppendTodo] = useState(logseq.settings.appendTodo);
 
   const handleForm = (e: any) => {
     setTaskVal(e.target.value);
+  };
+
+  const handleToggle = (e: any) => {
+    if (appendTodo) {
+      setAppendTodo(false);
+    } else if (!appendTodo) {
+      setAppendTodo(true);
+    }
   };
 
   const handleSubmit = async (e: any) => {
@@ -25,9 +34,13 @@ const App = () => {
         });
       }
 
-      await logseq.Editor.insertBlock(page, `TODO ${taskVal}`, {
-        isPageBlock: true,
-      });
+      await logseq.Editor.insertBlock(
+        page,
+        (appendTodo ? 'TODO ' : '') + taskVal,
+        {
+          isPageBlock: true,
+        }
+      );
 
       logseq.App.showMsg(`${taskVal} added to [[${page}]]!`);
 
@@ -44,7 +57,7 @@ const App = () => {
         if (logseq.settings.defaultPage) {
           await logseq.Editor.insertBlock(
             logseq.settings.defaultPage.toLowerCase(),
-            `TODO ${taskVal}`,
+            (appendTodo ? 'TODO ' : '') + taskVal,
             {
               isPageBlock: true,
             }
@@ -68,15 +81,23 @@ const App = () => {
             });
           }
 
-          await logseq.Editor.insertBlock(page, `TODO ${taskVal}`, {
-            isPageBlock: true,
-          });
+          await logseq.Editor.insertBlock(
+            page,
+            (appendTodo ? 'TODO ' : '') + taskVal,
+            {
+              isPageBlock: true,
+            }
+          );
 
           logseq.App.showMsg(`${taskVal} added to [[${page}]]!`);
         } else {
-          await logseq.Editor.insertBlock(startingDate, `TODO ${taskVal}`, {
-            isPageBlock: true,
-          });
+          await logseq.Editor.insertBlock(
+            startingDate,
+            (appendTodo ? 'TODO ' : '') + taskVal,
+            {
+              isPageBlock: true,
+            }
+          );
 
           logseq.App.showMsg(`${taskVal} added to today's journal page!`);
         }
@@ -97,7 +118,24 @@ const App = () => {
       className="task-container flex justify-center border border-black"
       tabIndex={-1}
     >
-      <div className=" absolute top-10 bg-white rounded-lg p-3 w-1/3 border">
+      <div className=" absolute top-10 bg-white rounded-lg p-3 w-1/3 border flex flex-col">
+        <label
+          htmlFor="toggle-example"
+          className="flex items-center cursor-pointer relative mb-4"
+        >
+          <input
+            type="checkbox"
+            id="toggle-example"
+            className="sr-only"
+            checked={appendTodo}
+            onChange={handleToggle}
+          />
+          <div className="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
+          <span className="ml-3 text-gray-900 text-sm font-medium">
+            Append TODO
+          </span>
+        </label>
+
         <input
           className="task-field appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
           type="text"

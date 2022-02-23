@@ -21,6 +21,12 @@ const main = () => {
     }
   }, 3000);
 
+  if (!logseq.settings.appendTodo) {
+    logseq.updateSettings({
+      appendTodo: true,
+    });
+  }
+
   // register shortcut for quick todo
   logseq.App.registerCommandPalette(
     {
