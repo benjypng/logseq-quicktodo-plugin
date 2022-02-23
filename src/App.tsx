@@ -13,8 +13,10 @@ const App = () => {
   const handleToggle = (e: any) => {
     if (appendTodo) {
       setAppendTodo(false);
+      logseq.updateSettings({ appendTodo: false });
     } else if (!appendTodo) {
       setAppendTodo(true);
+      logseq.updateSettings({ appendTodo: true });
     }
   };
 
