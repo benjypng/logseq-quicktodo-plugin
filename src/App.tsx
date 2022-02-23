@@ -142,7 +142,11 @@ const App = () => {
         <input
           className="task-field appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
           type="text"
-          placeholder="Enter your task to add to today's journal page"
+          placeholder={
+            appendTodo
+              ? "Enter a task to add to today's journal page"
+              : "Enter text to add to today's journal page"
+          }
           aria-label="quick todo"
           name="taskVal"
           onChange={handleForm}
