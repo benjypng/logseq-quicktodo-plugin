@@ -21,6 +21,8 @@ const App = () => {
   };
 
   const handleSubmit = async (e: any) => {
+    const { preferredWorkflow } = logseq.settings;
+
     if ((e.key === 'Enter' && e.ctrlKey) || (e.key === 'Enter' && e.metaKey)) {
       const regExp = /\[\[(.*?)\]\]/;
       const matched = regExp.exec(taskVal);
@@ -38,7 +40,8 @@ const App = () => {
 
       await logseq.Editor.insertBlock(
         page,
-        (appendTodo ? 'TODO ' : '') + taskVal,
+        (appendTodo ? (preferredWorkflow === 'todo' ? 'TODO ' : 'NOW ') : '') +
+          taskVal,
         {
           isPageBlock: true,
         }
@@ -59,7 +62,11 @@ const App = () => {
         if (logseq.settings.defaultPage) {
           await logseq.Editor.insertBlock(
             logseq.settings.defaultPage.toLowerCase(),
-            (appendTodo ? 'TODO ' : '') + taskVal,
+            (appendTodo
+              ? preferredWorkflow === 'todo'
+                ? 'TODO '
+                : 'NOW '
+              : '') + taskVal,
             {
               isPageBlock: true,
             }
@@ -85,7 +92,11 @@ const App = () => {
 
           await logseq.Editor.insertBlock(
             page,
-            (appendTodo ? 'TODO ' : '') + taskVal,
+            (appendTodo
+              ? preferredWorkflow === 'todo'
+                ? 'TODO '
+                : 'NOW '
+              : '') + taskVal,
             {
               isPageBlock: true,
             }
@@ -95,7 +106,11 @@ const App = () => {
         } else {
           await logseq.Editor.insertBlock(
             startingDate,
-            (appendTodo ? 'TODO ' : '') + taskVal,
+            (appendTodo
+              ? preferredWorkflow === 'todo'
+                ? 'TODO '
+                : 'NOW '
+              : '') + taskVal,
             {
               isPageBlock: true,
             }
@@ -134,14 +149,14 @@ const App = () => {
           />
           <div className="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
           <span className="ml-3 text-gray-900 text-sm font-medium">
-            Append TODO
+            Append TODO to Item
           </span>
         </label>
 
         <input
           className="task-field appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
           type="text"
-          placeholder="Enter your task to add to today's journal page"
+          placeholder="Enter your task or item and press Enter to insert into today's journal page or Cmd+Enter to insert into a mentioned page (using [[ ]])"
           aria-label="quick todo"
           name="taskVal"
           onChange={handleForm}
