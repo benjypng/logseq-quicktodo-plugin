@@ -10,7 +10,7 @@ const App = () => {
     setTaskVal(e.target.value);
   };
 
-  const handleToggle = (e: any) => {
+  const handleToggle = () => {
     if (appendTodo) {
       setAppendTodo(false);
       logseq.updateSettings({ appendTodo: false });
@@ -23,7 +23,12 @@ const App = () => {
   const handleSubmit = async (e: any) => {
     const { preferredWorkflow } = logseq.settings;
 
-    if ((e.key === 'Enter' && e.ctrlKey) || (e.key === 'Enter' && e.metaKey)) {
+    if ((e.key === 'a' && e.ctrlKey) || (e.key === 'a' && e.metaKey)) {
+      handleToggle();
+    } else if (
+      (e.key === 'Enter' && e.ctrlKey) ||
+      (e.key === 'Enter' && e.metaKey)
+    ) {
       const regExp = /\[\[(.*?)\]\]/;
       const matched = regExp.exec(taskVal);
       const page = matched[1];
@@ -52,7 +57,7 @@ const App = () => {
       setTaskVal('');
 
       logseq.hideMainUI({ restoreEditingCursor: true });
-    } else if (e.keyCode === 13) {
+    } else if (e.key === 'Enter') {
       if (taskVal.length > 0) {
         const startingDate = getDateForPageWithoutBrackets(
           new Date(),
