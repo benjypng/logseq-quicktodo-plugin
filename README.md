@@ -12,26 +12,22 @@ Please install from the marketplace. If it's not available there, you can [downl
 
 # Usage
 
+To start using, either activate using:
+
+- The command palatte (Win: `Ctrl + Shift + p`, Mac: `Cmd + Shift + p`) and type `quick`, and the option `Quick todo to today's journal page` will appear.
+
+or
+
+- Use the shortcut, "m t".
+
 ## Adding to today's journal page
 
-To begin, just activate the command palatte (Win: `Ctrl + Shift + p`, Mac: `Cmd + Shift + p`) and type `quick`, and the option `Quick todo to today's journal page` will appear. Select it and you can start keying in your task, and pressing `Enter` after. Your task will then appear on today's journal page.
-
-## Adding to default page
-
-If you would like to set a default page for the task items to go to, e.g. `Task Items`, please key in the following in your plugin settings, and **restart** Logseq:
-
-```
-{
-    "defaultPage": "Task Items"
-}
-```
+Simply key in your item and press `Enter`.
 
 ## Adding to page mentioned in task
 
-If you would like for the task to be in a mentioned page, e.g. `Plan party for [[Acme Company]]` to go to the page `[[Acme Company]]`, please key in the following in your plugin settings, and **restart** Logseq':
+If you would like for the task to be in a mentioned page, e.g. `Plan party for [[Acme Company]]` to go to the page `[[Acme Company]]`, press `Cmd/Ctrl + Enter` instead of just `Enter` after keying in your item.
 
-```
-{
-    "parsePage": true
-}
-```
+## Adding to default page
+
+If a default page is specified in the plugin settings, items will **not** be added to the today's journal page, but to do the default page specified.

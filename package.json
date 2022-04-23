@@ -5,25 +5,21 @@
     "icon": "./icon.svg"
   },
   "name": "logseq-quicktodo-plugin",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "",
   "main": "dist/index.html",
   "targets": {
     "main": false
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "postcss src/tailwind.css -o src/App.css && parcel build --no-source-maps src/index.html --public-url ./"
   },
   "keywords": [],
   "author": "hkgnp",
   "license": "MIT",
   "dependencies": {
-    "@logseq/libs": "^0.0.1-alpha.34",
-    "autoprefix": "^1.0.1",
+    "@logseq/libs": "^0.0.2",
     "logseq-dateutils": "^0.0.12",
-    "postcss-cli": "^9.1.0",
-    "postcss-import": "^14.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "tailwindcss": "^3.0.15"
@@ -31,6 +27,9 @@
   "devDependencies": {
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
-    "parcel": "^2.2.0"
+    "autoprefixer": "^10.4.4",
+    "parcel": "^2.2.0",
+    "postcss-cli": "^9.1.0",
+    "postcss-import": "^14.0.2"
   }
 }
