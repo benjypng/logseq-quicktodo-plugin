@@ -90,9 +90,14 @@ const App = (props: BlockEntity) => {
           );
 
           logseq.App.showMsg(
-            `${taskVal} added to your default page: ${logseq.settings.defaultPage}!`
+            `${taskVal} added to your default page: [[${logseq.settings.defaultPage}]]!`
           );
+
+          setTaskVal("");
+          logseq.hideMainUI({ restoreEditingCursor: true });
+          await logseq.Editor.editBlock(props.currBlock.uuid);
         } else {
+          console.log(startingDate);
           // SEND TO TODAY'S JOURNAL PAGE
           await logseq.Editor.insertBlock(
             startingDate,
@@ -108,6 +113,7 @@ const App = (props: BlockEntity) => {
 
           logseq.App.showMsg(`${taskVal} added to today's journal page!`);
         }
+
         setTaskVal("");
         logseq.hideMainUI({ restoreEditingCursor: true });
         await logseq.Editor.editBlock(props.currBlock.uuid);
