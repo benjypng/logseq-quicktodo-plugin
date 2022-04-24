@@ -31,3 +31,5 @@ If you would like for the task to be in a mentioned page, e.g. `Plan party for [
 ## Adding to default page
 
 If a default page is specified in the plugin settings, items will **not** be added to the today's journal page, but to do the default page specified.
+
+![](/screenshots/settings.png)
