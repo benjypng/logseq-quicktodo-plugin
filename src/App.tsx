@@ -151,6 +151,7 @@ const App = (props: BlockEntity) => {
 
         <input
           className="task-field appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none placeholder:text-xs"
+          autoFocus={true}
           type="text"
           placeholder="Enter to send to today's journal page or Cmd+Enter to send to mentioned page (mentioned page must be in [[square brackets]])"
           aria-label="quick todo"
