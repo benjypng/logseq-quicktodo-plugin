@@ -22,7 +22,12 @@ const App = (props: BlockEntity) => {
   };
 
   const handleSubmit = async (e: any) => {
-    const { preferredWorkflow } = logseq.settings;
+    const {
+      preferredWorkflow,
+      preferredDateFormat,
+      defaultPage,
+      defaultBlock,
+    } = logseq.settings;
 
     if ((e.key === "t" && e.ctrlKey) || (e.key === "t" && e.metaKey)) {
       // HANDLE TOGGLING OF APPEND TODO
@@ -35,7 +40,7 @@ const App = (props: BlockEntity) => {
       const regExp = /\[\[(.*?)\]\]/;
       const matched = regExp.exec(taskVal);
       if (matched === null) {
-        logseq.App.showMsg(
+        logseq.UI.showMsg(
           "If you are using Cmd/Ctrl + Enter, please ensure that you include a [[page]] in your item.",
           "error"
         );
@@ -63,7 +68,7 @@ const App = (props: BlockEntity) => {
         }
       );
 
-      logseq.App.showMsg(`${taskVal} added to [[${page}]]!`);
+      logseq.UI.showMsg(`${taskVal} added to [[${page}]]!`);
 
       setTaskVal("");
       logseq.hideMainUI({ restoreEditingCursor: true });
@@ -72,13 +77,13 @@ const App = (props: BlockEntity) => {
       if (taskVal.length > 0) {
         const startingDate = getDateForPageWithoutBrackets(
           new Date(),
-          logseq.settings.preferredDateFormat
+          preferredDateFormat
         );
 
         // SEND TO DEFAULT PAGE
-        if (logseq.settings.defaultPage) {
+        if (defaultPage) {
           await logseq.Editor.insertBlock(
-            logseq.settings.defaultPage.toLowerCase(),
+            defaultPage.toLowerCase(),
             (appendTodo
               ? preferredWorkflow === "todo"
                 ? "TODO "
@@ -89,36 +94,72 @@ const App = (props: BlockEntity) => {
             }
           );
 
-          logseq.App.showMsg(
-            `${taskVal} added to your default page: [[${logseq.settings.defaultPage}]]!`
+          logseq.UI.showMsg(
+            `${taskVal} added to your default page: [[${defaultPage}]]!`
           );
 
           setTaskVal("");
           logseq.hideMainUI({ restoreEditingCursor: true });
           await logseq.Editor.editBlock(props.currBlock.uuid);
         } else {
-          console.log(startingDate);
           // SEND TO TODAY'S JOURNAL PAGE
-          await logseq.Editor.insertBlock(
-            startingDate,
-            (appendTodo
-              ? preferredWorkflow === "todo"
-                ? "TODO "
-                : "NOW "
-              : "") + taskVal,
-            {
-              isPageBlock: true,
+          if (defaultBlock) {
+            let pbt: BlockEntity[] = await logseq.Editor.getPageBlocksTree(
+              startingDate
+            );
+            pbt = pbt.filter((b) => b.content === defaultBlock);
+            if (pbt.length > 1) {
+              logseq.UI.showMsg(
+                `More than one instance of the default block was found`,
+                "error"
+              );
+              return;
+            } else if (pbt.length === 1) {
+              await logseq.Editor.insertBlock(
+                pbt[0].uuid,
+                (appendTodo
+                  ? preferredWorkflow === "todo"
+                    ? "TODO "
+                    : "NOW "
+                  : "") + taskVal,
+                { before: false, sibling: false }
+              );
+              logseq.UI.showMsg(`${taskVal} added to today's journal page!`);
+            } else {
+              await logseq.Editor.insertBlock(
+                startingDate,
+                (appendTodo
+                  ? preferredWorkflow === "todo"
+                    ? "TODO "
+                    : "NOW "
+                  : "") + taskVal,
+                {
+                  isPageBlock: true,
+                }
+              );
+              logseq.UI.showMsg(`${taskVal} added to today's journal page!`);
             }
-          );
-
-          logseq.App.showMsg(`${taskVal} added to today's journal page!`);
+          } else {
+            await logseq.Editor.insertBlock(
+              startingDate,
+              (appendTodo
+                ? preferredWorkflow === "todo"
+                  ? "TODO "
+                  : "NOW "
+                : "") + taskVal,
+              {
+                isPageBlock: true,
+              }
+            );
+            logseq.UI.showMsg(`${taskVal} added to today's journal page!`);
+          }
         }
 
         setTaskVal("");
         logseq.hideMainUI({ restoreEditingCursor: true });
         await logseq.Editor.editBlock(props.currBlock.uuid);
       } else {
-        logseq.App.showMsg(
+        logseq.UI.showMsg(
           "Please enter a task first or press Esc to close the popup.",
           "error"
         );

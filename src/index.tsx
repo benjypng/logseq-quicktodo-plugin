@@ -45,7 +45,6 @@ const main = () => {
     },
     async () => {
       logseq.showMainUI();
-
       const currBlock: BlockEntity = await logseq.Editor.getCurrentBlock();
       ReactDOM.render(
         <React.StrictMode>
