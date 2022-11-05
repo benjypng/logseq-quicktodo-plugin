@@ -5,7 +5,7 @@
     "icon": "./icon.svg"
   },
   "name": "logseq-quicktodo-plugin",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "",
   "main": "dist/index.html",
   "targets": {

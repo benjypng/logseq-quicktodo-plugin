@@ -107,7 +107,7 @@ const App = (props: BlockEntity) => {
             let pbt: BlockEntity[] = await logseq.Editor.getPageBlocksTree(
               startingDate
             );
-            pbt = pbt.filter((b) => b.content === defaultBlock);
+            pbt = pbt.filter((b) => b.content.includes(defaultBlock));
             if (pbt.length > 1) {
               logseq.UI.showMsg(
                 `More than one instance of the default block was found`,
