@@ -172,7 +172,7 @@ const App = (props: BlockEntity) => {
       className="task-container flex justify-center border border-black"
       tabIndex={-1}
     >
-      <div className=" absolute top-10 bg-white rounded-lg p-3 w-2/3 border flex flex-col">
+      <div className="absolute top-10 bg-white rounded-lg p-3 w-2/3 border flex flex-col">
         <label
           htmlFor="toggle-example"
           className="flex items-center cursor-pointer relative mb-4"

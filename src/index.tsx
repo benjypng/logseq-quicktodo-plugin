@@ -23,7 +23,7 @@ const main = () => {
       preferredWorkflow: preferredWorkflow,
     });
 
-    if (!logseq.settings.appendTodo) {
+    if (!logseq.settings!.appendTodo) {
       logseq.updateSettings({
         appendTodo: true,
       });
@@ -45,7 +45,7 @@ const main = () => {
     },
     async () => {
       logseq.showMainUI();
-      const currBlock: BlockEntity = await logseq.Editor.getCurrentBlock();
+      const currBlock = (await logseq.Editor.getCurrentBlock()) as BlockEntity;
       ReactDOM.render(
         <React.StrictMode>
           {/* @ts-ignore */}
