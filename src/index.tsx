@@ -3,8 +3,10 @@ import { BlockEntity } from "@logseq/libs/dist/LSPlugin";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import "logseq-dateutils";
 import { callSettings } from "./callSettings";
 import { handleClosePopup } from "./handleClosePopup";
+import { getDateForPage } from "logseq-dateutils";
 
 const main = () => {
   console.log("logseq-quicktodo-plugin loaded");
@@ -48,7 +50,7 @@ const main = () => {
       const currBlock = (await logseq.Editor.getCurrentBlock()) as BlockEntity;
       ReactDOM.render(
         <React.StrictMode>
-          {/* @ts-ignore */}
+          {/* @ts-expect-error */}
           <App currBlock={currBlock} />
         </React.StrictMode>,
         document.getElementById("app")
@@ -59,6 +61,28 @@ const main = () => {
           (document.querySelector(".task-field") as HTMLElement).focus();
         }
       });
+    }
+  );
+
+  // Convert block to todo
+  logseq.App.registerCommandPalette(
+    {
+      key: "convert-todo",
+      label: "Convert block to TODO",
+      keybinding: {
+        binding: "mod+t",
+        mode: "global",
+      },
+    },
+    async (e: any) => {
+      const content = await logseq.Editor.getEditingBlockContent();
+      await logseq.Editor.updateBlock(
+        e.uuid,
+        `TODO **${getDateForPage(
+          new Date(),
+          logseq.settings!.preferredDateFormat
+        )}** ${content}`
+      );
     }
   );
 };
