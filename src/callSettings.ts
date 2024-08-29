@@ -18,6 +18,14 @@ export const callSettings = () => {
         "Default block in the Daily Notes Page to send tasks or items to. This block must exist or the item will be added to the bottom of the page. If more than one block of the same name exists, there will be an error message.",
       title: "Default Block",
     },
+    {
+      key: "preferredWorkflow",
+      type: "string",
+      default: "NOW",
+      description:
+        "What new tasks should be created as (either NOW, or TODO).",
+      title: "Preferred Workflow for New Tasks",
+    },
   ];
   logseq.useSettingsSchema(settings);
 };

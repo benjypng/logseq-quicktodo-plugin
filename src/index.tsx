@@ -17,13 +17,7 @@ const main = () => {
 
   // Get preferred date format
   window.setTimeout(async () => {
-    const userConfigs = await logseq.App.getUserConfigs();
-    const preferredDateFormat: string = userConfigs.preferredDateFormat;
-    const preferredWorkflow: string = userConfigs.preferredWorkflow;
-    logseq.updateSettings({
-      preferredDateFormat: preferredDateFormat,
-      preferredWorkflow: preferredWorkflow,
-    });
+    const { preferredDateFormat, preferredWorkflow } = logseq.settings;
 
     if (!logseq.settings!.appendTodo) {
       logseq.updateSettings({
