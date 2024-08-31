@@ -10,6 +10,7 @@ import {
   TextInput,
 } from '@mantine/core'
 import { getDateForPageWithoutBrackets } from 'logseq-dateutils'
+import { KeyboardEvent } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
 import { theme } from '../../styles/theme'
@@ -34,15 +35,18 @@ export const QuickTodo = () => {
     },
   })
 
-  const onSubmit: SubmitHandler<FormProps> = async (data) => {
-    let itemToInsert = data.append_todo ? `TODO ${data.item}` : data.item
-
+  const getItemToInsert = async (data: FormProps) => {
+    const itemToInsert = data.append_todo ? `TODO ${data.item}` : data.item
     const currPage = await logseq.Editor.getCurrentPage()
-    itemToInsert = data.append_source
+    return data.append_source
       ? currPage
         ? `${itemToInsert} (from: [[${currPage?.name}]])`
         : itemToInsert
       : itemToInsert
+  }
+
+  const onNormalSubmit: SubmitHandler<FormProps> = async (data) => {
+    const itemToInsert = await getItemToInsert(data)
 
     // Insert
     const defaultLocation = logseq.settings!.defaultLocation as string
@@ -62,6 +66,31 @@ export const QuickTodo = () => {
     logseq.hideMainUI()
   }
 
+  const onModEnter: SubmitHandler<FormProps> = async (data) => {
+    const re = /\[\[(.*?)\]\]/.exec(data.item)
+    if (!re || !re[0] || !re[1]) {
+      logseq.UI.showMsg('No target page specified')
+      return
+    }
+    const itemToInsert = await getItemToInsert(data)
+    await logseq.Editor.appendBlockInPage(
+      re[1],
+      itemToInsert.replace(re[0], ''),
+    )
+
+    logseq.UI.showMsg(`${itemToInsert} added`, 'success', { timeout: 3000 })
+    reset()
+    logseq.hideMainUI()
+  }
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+      event.preventDefault()
+      const wrappedSubmitFunction = handleSubmit(onModEnter)
+      wrappedSubmitFunction()
+    }
+  }
+
   return (
     <MantineProvider theme={theme}>
       <Container
@@ -72,14 +101,13 @@ export const QuickTodo = () => {
         bd="0.1rem solid #ccc"
         style={{ borderRadius: '0.2rem' }}
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onNormalSubmit)} onKeyDown={handleKeyDown}>
           <Flex direction="row" gap="xl">
             <Controller
               control={control}
               name="append_todo"
               render={({ field }) => (
                 <Switch
-                  required
                   labelPosition="left"
                   label="Append TODO"
                   checked={field.value}
@@ -92,7 +120,6 @@ export const QuickTodo = () => {
               name="append_source"
               render={({ field }) => (
                 <Switch
-                  required
                   labelPosition="left"
                   label="Append Source"
                   checked={field.value}
