@@ -3,6 +3,7 @@ import { createTheme } from '@mantine/core'
 export const theme = createTheme({
   primaryColor: 'darkTeal',
   primaryShade: 9,
+  cursorType: 'pointer',
   colors: {
     darkTeal: [
       '#ecfbfd',

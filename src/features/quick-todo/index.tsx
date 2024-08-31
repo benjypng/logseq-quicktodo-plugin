@@ -1,7 +1,13 @@
 import '../../styles/bg.css'
 import '@mantine/core/styles.css'
 
-import { Container, Input, MantineProvider, Space, Switch } from '@mantine/core'
+import {
+  Container,
+  MantineProvider,
+  Space,
+  Switch,
+  TextInput,
+} from '@mantine/core'
 import { getDateForPageWithoutBrackets } from 'logseq-dateutils'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
@@ -13,12 +19,19 @@ interface FormProps {
 }
 
 export const QuickTodo = () => {
-  const { control, reset, handleSubmit } = useForm<FormProps>({
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormProps>({
     defaultValues: {
       item: '',
       append_todo: logseq.settings!.appendTodo as boolean,
     },
   })
+
+  console.log(errors)
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
     const itemToInsert = data.append_todo ? `TODO ${data.item}` : data.item
@@ -43,9 +56,9 @@ export const QuickTodo = () => {
           <Controller
             control={control}
             name="append_todo"
-            rules={{ required: true }}
             render={({ field }) => (
               <Switch
+                required
                 label="Append TODO"
                 checked={field.value}
                 onChange={field.onChange}
@@ -55,9 +68,15 @@ export const QuickTodo = () => {
           <Space h="1rem" />
           <Controller
             control={control}
+            rules={{ required: 'This field is required' }}
             name="item"
             render={({ field }) => (
-              <Input {...field} placeholder="Enter task" id="quicktodo" />
+              <TextInput
+                {...field}
+                placeholder="Enter task and press Enter"
+                id="quicktodo"
+                error={errors.item?.message}
+              />
             )}
           />
         </form>
