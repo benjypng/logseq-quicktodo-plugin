@@ -39,7 +39,9 @@ export const QuickTodo = () => {
 
     const currPage = await logseq.Editor.getCurrentPage()
     itemToInsert = data.append_source
-      ? `${itemToInsert} (from: [[${currPage?.name}]])`
+      ? currPage
+        ? `${itemToInsert} (from: [[${currPage?.name}]])`
+        : itemToInsert
       : itemToInsert
 
     // Insert
