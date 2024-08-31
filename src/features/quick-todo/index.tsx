@@ -3,6 +3,7 @@ import '@mantine/core/styles.css'
 
 import {
   Container,
+  Flex,
   MantineProvider,
   Space,
   Switch,
@@ -16,6 +17,7 @@ import { theme } from '../../styles/theme'
 interface FormProps {
   item: string
   append_todo: boolean
+  append_source: boolean
 }
 
 export const QuickTodo = () => {
@@ -28,16 +30,31 @@ export const QuickTodo = () => {
     defaultValues: {
       item: '',
       append_todo: logseq.settings!.appendTodo as boolean,
+      append_source: logseq.settings!.appendSource as boolean,
     },
   })
 
-  console.log(errors)
-
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
-    const itemToInsert = data.append_todo ? `TODO ${data.item}` : data.item
-    const { preferredDateFormat } = await logseq.App.getUserConfigs()
-    const dnp = getDateForPageWithoutBrackets(new Date(), preferredDateFormat)
-    await logseq.Editor.appendBlockInPage(dnp, itemToInsert)
+    let itemToInsert = data.append_todo ? `TODO ${data.item}` : data.item
+
+    const currPage = await logseq.Editor.getCurrentPage()
+    itemToInsert = data.append_source
+      ? `${itemToInsert} (from: [[${currPage?.name}]])`
+      : itemToInsert
+
+    // Insert
+    const defaultLocation = logseq.settings!.defaultLocation as string
+    if (defaultLocation.length > 0) {
+      await logseq.Editor.appendBlockInPage(defaultLocation, itemToInsert)
+    } else if (defaultLocation.startsWith('((')) {
+      const block = defaultLocation.replace('((', '').replace('))', '')
+      await logseq.Editor.insertBlock(block, itemToInsert)
+    } else {
+      const { preferredDateFormat } = await logseq.App.getUserConfigs()
+      const dnp = getDateForPageWithoutBrackets(new Date(), preferredDateFormat)
+      await logseq.Editor.appendBlockInPage(dnp, itemToInsert)
+    }
+
     reset()
     logseq.hideMainUI()
   }
@@ -53,18 +70,34 @@ export const QuickTodo = () => {
         style={{ borderRadius: '0.2rem' }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Controller
-            control={control}
-            name="append_todo"
-            render={({ field }) => (
-              <Switch
-                required
-                label="Append TODO"
-                checked={field.value}
-                onChange={field.onChange}
-              />
-            )}
-          />
+          <Flex direction="row" gap="xl">
+            <Controller
+              control={control}
+              name="append_todo"
+              render={({ field }) => (
+                <Switch
+                  required
+                  labelPosition="left"
+                  label="Append TODO"
+                  checked={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="append_source"
+              render={({ field }) => (
+                <Switch
+                  required
+                  labelPosition="left"
+                  label="Append Source"
+                  checked={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </Flex>
           <Space h="1rem" />
           <Controller
             control={control}

@@ -28,28 +28,6 @@ const main = () => {
       logseq.showMainUI()
     },
   )
-
-  // Convert block to todo
-  // logseq.App.registerCommandPalette(
-  //   {
-  //     key: 'convert-todo',
-  //     label: 'Convert block to TODO',
-  //     keybinding: {
-  //       binding: 'mod+t',
-  //       mode: 'global',
-  //     },
-  //   },
-  //   async (e: any) => {
-  //     const content = await logseq.Editor.getEditingBlockContent()
-  //     await logseq.Editor.updateBlock(
-  //       e.uuid,
-  //       `TODO **${getDateForPage(
-  //         new Date(),
-  //         logseq.settings!.preferredDateFormat,
-  //       )}** ${content}`,
-  //     )
-  //   },
-  // )
 }
 
 logseq.useSettingsSchema(settings).ready(main).catch(console.error)

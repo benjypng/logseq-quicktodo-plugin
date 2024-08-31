@@ -10,19 +10,19 @@ export const settings: SettingSchemaDesc[] = [
     default: true,
   },
   {
-    key: 'defaultPage',
-    type: 'string',
+    key: 'appendSource',
+    type: 'boolean',
+    title: 'Append Source By Default',
     description:
-      "Default page to send tasks or items to. If left blank, it will be sent to today's journal page.",
-    title: 'Default Page',
-    default: '',
+      'When indicated, all inserted items will indicate which page you are at when you inserted the item. You can also change this when inserting an item.',
+    default: false,
   },
   {
-    key: 'defaultBlock',
+    key: 'defaultLocation',
     type: 'string',
+    title: 'Default Location',
     description:
-      'Default block in the Daily Notes Page to send tasks or items to. This block must exist or the item will be added to the bottom of the page. If more than one block of the same name exists, there will be an error message.',
-    title: 'Default Block',
+      "Default page or block to send items to. If left blank, it will be sent to today's journal page. If a page name is indicated (e.g. Inbox), it will be sent to that. If a block UUID is indicated (include open and closing parantheses, e.g. ((66d288d1-dc32-481e-b0a5-c7bc649e1dd2)) ), it will be appended to the block.",
     default: '',
   },
 ]
