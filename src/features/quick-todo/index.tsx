@@ -57,6 +57,7 @@ export const QuickTodo = () => {
       await logseq.Editor.appendBlockInPage(dnp, itemToInsert)
     }
 
+    logseq.UI.showMsg(`${itemToInsert} added`, 'success', { timeout: 3000 })
     reset()
     logseq.hideMainUI()
   }
